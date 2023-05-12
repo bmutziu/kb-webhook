@@ -29,7 +29,6 @@ import (
 	"k8s.io/apimachinery/pkg/types"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
 	"sigs.k8s.io/controller-runtime/pkg/log"
 
 	appv1 "github.com/bmutziu/kb-webhook/api/v1"
@@ -96,11 +95,11 @@ func (r *AppReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.R
 		Spec: deploySpec,
 	}
 
-	scheme := runtime.Scheme{}
-	if err := controllerutil.SetControllerReference(instance, deploy, &scheme); err != nil {
-		log.Error(err, "Set DeployVersion CtlRef Error")
-		return ctrl.Result{}, err
-	}
+	//scheme := runtime.Scheme{}
+	//if err := controllerutil.SetControllerReference(instance, deploy, &scheme); err != nil {
+	//	log.Error(err, "Set DeployVersion CtlRef Error")
+	//	return ctrl.Result{}, err
+	//}
 
 	found := &appsv1.Deployment{}
 	err = r.Client.Get(context.Background(), types.NamespacedName{Name: deploy.Name, Namespace: deploy.Namespace}, found)

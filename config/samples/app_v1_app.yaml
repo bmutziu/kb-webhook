@@ -1,12 +1,24 @@
 apiVersion: app.bmutziu.me/v1
 kind: App
 metadata:
+  name: app-sample
   labels:
     app.kubernetes.io/name: app
     app.kubernetes.io/instance: app-sample
     app.kubernetes.io/part-of: kb-webhook
     app.kubernetes.io/managed-by: kustomize
     app.kubernetes.io/created-by: kb-webhook
-  name: app-sample
 spec:
-  # TODO(user): Add fields here
+  deploy:
+    selector:
+      matchLabels:
+        app: app-sample
+    template:
+      metadata:
+        name: sample
+        labels:
+          app: app-sample
+      spec:
+        containers:
+          - name: cn
+            image: docker.io/redis:7-alpine
