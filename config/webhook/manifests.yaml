@@ -5,24 +5,26 @@ metadata:
   creationTimestamp: null
   name: mutating-webhook-configuration
 webhooks:
-  - admissionReviewVersions:
-      - v1
-    clientConfig:
-      caBundle: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUREekNDQWZlZ0F3SUJBZ0lVUXRMWUVnNFAxQjUzbVUwTlFhMmN6ZkdWZUY4d0RRWUpLb1pJaHZjTkFRRUwKQlFBd0ZqRVVNQklHQTFVRUF3d0xNVGt5TGpFMk9DNDFMakl3SUJjTk1qTXdOVEV5TVRJd05qUTRXaGdQTWpBMQpNREE1TWpjeE1qQTJORGhhTUJZeEZEQVNCZ05WQkFNTUN6RTVNaTR4TmpndU5TNHlNSUlCSWpBTkJna3Foa2lHCjl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUFwV0YvdGJwQXlSU091SFZMS2lpc09lMlJ2c0dyOHJtbDE4ZTgKbTlBSzJCdGtOT0M3RnJGZmF6bG96eTg2M1doanh6bHYxc1AyYjYvYkR1RFVlYS82OHhCSG5teTUyZEw5SkZTbApvODZZSXo0WHVYVCtQTEFmRUpZMXhhN3BPeDBwQ2dzSGd2UWdmckdVVjdscVRkR0IzbTFSNTk3TWp1M0t1Q0ZRClFzRGF3UXNibG41bERYR1E5UWRTR0g2bStLaFdQdUZ2MWtIL2NYZGFEa3hBRDhZRmNDRDlMRXNwQ3VSWEpGQUcKZ1czclVGdXFUS2F5dXROQ3Y5QlZQaGRFVnNHZUZNK0h1cDduZ3hXekEwNGo5eFdGU1ZBUWxoU1BzbnZiM3BpOApKTnhMSFdZcDFtY1pSeXlYajFFNmduTmNRUmhlcXI3Rnl5SUJmOEV3TUQvOHArd2g1UUlEQVFBQm8xTXdVVEFkCkJnTlZIUTRFRmdRVTQxWmpFNStIZVFQMk5ObXBnRE40RTlBM3FnOHdId1lEVlIwakJCZ3dGb0FVNDFaakU1K0gKZVFQMk5ObXBnRE40RTlBM3FnOHdEd1lEVlIwVEFRSC9CQVV3QXdFQi96QU5CZ2txaGtpRzl3MEJBUXNGQUFPQwpBUUVBZFBucGZwWUsydEEzNWFCVnFhTDE1SGZSRHN0TExIeUp3TWRXRUZRREtvdTExUDFkeTh1b3dORCtaZy84Cm5BaDQyTWJkT3oyQUxNSk8wdjVWQjUrWk9wbzY2RUhGcUtPVDhtL3JNNTFpeWFBWmRHN1Nla25qYkU2UEIxUjYKT21EV1NjN2s0VTg1WkNpYmdHVWRhZ2RTUTBpWTNXTTZNckNjVTZHZTEvZlY2YjQwZ3ZiRUNFUjR4TWpCRlczOAptS0tjdk5xOUxvWHVwNjM0SWg5RGUzS05YY0x5TTNTdjdES0lMb050SkVEWHY4am4waXpud01WWlhXT29QR3V0CmZYbW5RWlRVSlhJRG81RHJMT3N2dCtIemt2M2hBS3o5UjdYZEFWWTJaRzIvanRFNlJBSDJyNGdyNU5KWTRrUHUKTy82RG5FNkgzWXlyZEF4d0hjeVMxYkVzQVE9PQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==
-      url: https://192.168.5.2:9443/mutate-app-bmutziu-me-v1-app
-    failurePolicy: Fail
-    name: mapp.kb.io
-    rules:
-      - apiGroups:
-          - app.bmutziu.me
-        apiVersions:
-          - v1
-        operations:
-          - CREATE
-          - UPDATE
-        resources:
-          - apps
-    sideEffects: None
+- admissionReviewVersions:
+  - v1
+  clientConfig:
+    service:
+      name: webhook-service
+      namespace: system
+      path: /mutate-app-bmutziu-me-v1-app
+  failurePolicy: Fail
+  name: mapp.kb.io
+  rules:
+  - apiGroups:
+    - app.bmutziu.me
+    apiVersions:
+    - v1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - apps
+  sideEffects: None
 ---
 apiVersion: admissionregistration.k8s.io/v1
 kind: ValidatingWebhookConfiguration
@@ -30,21 +32,23 @@ metadata:
   creationTimestamp: null
   name: validating-webhook-configuration
 webhooks:
-  - admissionReviewVersions:
-      - v1
-    clientConfig:
-      caBundle: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUREekNDQWZlZ0F3SUJBZ0lVUXRMWUVnNFAxQjUzbVUwTlFhMmN6ZkdWZUY4d0RRWUpLb1pJaHZjTkFRRUwKQlFBd0ZqRVVNQklHQTFVRUF3d0xNVGt5TGpFMk9DNDFMakl3SUJjTk1qTXdOVEV5TVRJd05qUTRXaGdQTWpBMQpNREE1TWpjeE1qQTJORGhhTUJZeEZEQVNCZ05WQkFNTUN6RTVNaTR4TmpndU5TNHlNSUlCSWpBTkJna3Foa2lHCjl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUFwV0YvdGJwQXlSU091SFZMS2lpc09lMlJ2c0dyOHJtbDE4ZTgKbTlBSzJCdGtOT0M3RnJGZmF6bG96eTg2M1doanh6bHYxc1AyYjYvYkR1RFVlYS82OHhCSG5teTUyZEw5SkZTbApvODZZSXo0WHVYVCtQTEFmRUpZMXhhN3BPeDBwQ2dzSGd2UWdmckdVVjdscVRkR0IzbTFSNTk3TWp1M0t1Q0ZRClFzRGF3UXNibG41bERYR1E5UWRTR0g2bStLaFdQdUZ2MWtIL2NYZGFEa3hBRDhZRmNDRDlMRXNwQ3VSWEpGQUcKZ1czclVGdXFUS2F5dXROQ3Y5QlZQaGRFVnNHZUZNK0h1cDduZ3hXekEwNGo5eFdGU1ZBUWxoU1BzbnZiM3BpOApKTnhMSFdZcDFtY1pSeXlYajFFNmduTmNRUmhlcXI3Rnl5SUJmOEV3TUQvOHArd2g1UUlEQVFBQm8xTXdVVEFkCkJnTlZIUTRFRmdRVTQxWmpFNStIZVFQMk5ObXBnRE40RTlBM3FnOHdId1lEVlIwakJCZ3dGb0FVNDFaakU1K0gKZVFQMk5ObXBnRE40RTlBM3FnOHdEd1lEVlIwVEFRSC9CQVV3QXdFQi96QU5CZ2txaGtpRzl3MEJBUXNGQUFPQwpBUUVBZFBucGZwWUsydEEzNWFCVnFhTDE1SGZSRHN0TExIeUp3TWRXRUZRREtvdTExUDFkeTh1b3dORCtaZy84Cm5BaDQyTWJkT3oyQUxNSk8wdjVWQjUrWk9wbzY2RUhGcUtPVDhtL3JNNTFpeWFBWmRHN1Nla25qYkU2UEIxUjYKT21EV1NjN2s0VTg1WkNpYmdHVWRhZ2RTUTBpWTNXTTZNckNjVTZHZTEvZlY2YjQwZ3ZiRUNFUjR4TWpCRlczOAptS0tjdk5xOUxvWHVwNjM0SWg5RGUzS05YY0x5TTNTdjdES0lMb050SkVEWHY4am4waXpud01WWlhXT29QR3V0CmZYbW5RWlRVSlhJRG81RHJMT3N2dCtIemt2M2hBS3o5UjdYZEFWWTJaRzIvanRFNlJBSDJyNGdyNU5KWTRrUHUKTy82RG5FNkgzWXlyZEF4d0hjeVMxYkVzQVE9PQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==
-      url: https://192.168.5.2:9443/validate-app-bmutziu-me-v1-app
-    failurePolicy: Fail
-    name: vapp.kb.io
-    rules:
-      - apiGroups:
-          - app.bmutziu.me
-        apiVersions:
-          - v1
-        operations:
-          - CREATE
-          - UPDATE
-        resources:
-          - apps
-    sideEffects: None
+- admissionReviewVersions:
+  - v1
+  clientConfig:
+    service:
+      name: webhook-service
+      namespace: system
+      path: /validate-app-bmutziu-me-v1-app
+  failurePolicy: Fail
+  name: vapp.kb.io
+  rules:
+  - apiGroups:
+    - app.bmutziu.me
+    apiVersions:
+    - v1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - apps
+  sideEffects: None

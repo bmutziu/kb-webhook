@@ -44,6 +44,9 @@ type AppReconciler struct {
 //+kubebuilder:rbac:groups=app.bmutziu.me,resources=apps/status,verbs=get;update;patch
 //+kubebuilder:rbac:groups=app.bmutziu.me,resources=apps/finalizers,verbs=update
 
+//+kubebuilder:rbac:groups=apps,resources=deployments,verbs=get;list;watch;create;update;patch;delete
+//+kubebuilder:rbac:groups=core,resources=services,verbs=get;list;watch;create;update;patch;delete
+
 // Reconcile is part of the main kubernetes reconciliation loop which aims to
 // move the current state of the cluster closer to the desired state.
 // TODO(user): Modify the Reconcile function to compare the state specified by
