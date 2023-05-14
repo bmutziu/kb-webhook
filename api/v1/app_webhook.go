@@ -19,6 +19,7 @@ package v1
 import (
 	core "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/util/validation/field"
 	ctrl "sigs.k8s.io/controller-runtime"
 	logf "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/webhook"
@@ -74,6 +75,10 @@ func (r *App) ValidateUpdate(old runtime.Object) error {
 	applog.Info("validate update", "name", r.Name)
 
 	// TODO(user): fill in your validation logic upon object update.
+	a := old.(*App)
+	if r.Spec.Deploy.Template.Spec.Containers[0].Image != a.Spec.Deploy.Template.Spec.Containers[0].Image {
+		return field.Invalid(field.NewPath("spec").Child("deploy").Child("template").Child("spec").Child("containers").Index(0).Child("image"), r.Spec.Deploy.Template.Spec.Containers[0].Image, "For the 1st container image is immutable")
+	}
 	return nil
 }
 
